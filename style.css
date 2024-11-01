@@ -499,6 +499,10 @@ footer {
 .footer_section .follow_us i:hover {
     color: var(--secondary-color);
 }
+#copyright{
+    text-align: center;
+    margin-top: 20px;
+}
 
 
 /* Responsive Media Query code for max-width: 1024px */
