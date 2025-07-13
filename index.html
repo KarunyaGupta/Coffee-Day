@@ -364,29 +364,122 @@
     </div>
 
     <script>
+      // Enhanced scroll animations
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Intersection Observer for animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe elements for scroll animations
+      document.addEventListener('DOMContentLoaded', () => {
+        const animateElements = document.querySelectorAll('.services_items, .why_items, .gallery_items, .contact_items');
+        animateElements.forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(30px)';
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          observer.observe(el);
+        });
+      });
+
+      // Enhanced popup functions with error handling
       function showOrderPopup() {
-        document.getElementById('order-popup').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        try {
+          const popup = document.getElementById('order-popup');
+          if (popup) {
+            popup.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.width = '100%';
+          }
+        } catch (error) {
+          console.error('Error showing popup:', error);
+          window.location.href = 'order.html';
+        }
       }
       
       function closeOrderPopup() {
-        document.getElementById('order-popup').classList.add('hidden');
-        document.body.style.overflow = 'auto';
+        try {
+          const popup = document.getElementById('order-popup');
+          if (popup) {
+            popup.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            document.body.style.position = 'static';
+            document.body.style.width = 'auto';
+          }
+        } catch (error) {
+          console.error('Error closing popup:', error);
+        }
       }
       
       function goToOrderPage() {
-        closeOrderPopup();
-        setTimeout(() => {
+        try {
+          closeOrderPopup();
+          setTimeout(() => {
+            window.location.href = 'order.html';
+          }, 200);
+        } catch (error) {
+          console.error('Error navigating to order page:', error);
           window.location.href = 'order.html';
-        }, 300);
+        }
       }
       
-      // Close popup when clicking outside
-      window.addEventListener('click', (e) => {
+      // Enhanced event handling
+      document.addEventListener('DOMContentLoaded', function() {
         const popup = document.getElementById('order-popup');
-        if (e.target === popup) {
-          closeOrderPopup();
+        if (popup) {
+          popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+              closeOrderPopup();
+            }
+          });
+          
+          popup.addEventListener('touchstart', function(e) {
+            if (e.target === popup) {
+              closeOrderPopup();
+            }
+          });
         }
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closeOrderPopup();
+          }
+        });
+
+        document.querySelectorAll('.button').forEach(button => {
+          button.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            this.click();
+          });
+        });
+      });
+
+      window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+          const popup = document.getElementById('order-popup');
+          if (popup && !popup.classList.contains('hidden')) {
+            popup.style.height = window.innerHeight + 'px';
+          }
+        }, 100);
       });
     </script>
   </body>

@@ -51,12 +51,12 @@
                         <span id="cart-count">0</span>
                     </div>
                     <div class="cart_total">
-                        Total: Rs<span id="total-amount">0</span>
+                        Total: &#8377; <span id="total-amount"> 0</span>
                     </div>
                 </div>
                 <button class="button checkout-btn" id="checkout-btn" disabled>
                     <i class="bx bx-credit-card"></i>
-                    Checkout
+                    <span class="btn-text">Checkout</span>
                 </button>
             </div>
 
@@ -79,7 +79,7 @@
             </div>
             <div class="cart_footer">
                 <div class="cart_total_modal">
-                    Total: Rs<span id="modal-total">0</span>
+                    Total: &#8377; <span id="modal-total"> 0</span>
                 </div>
                 <button class="button" id="confirm-order-btn">Confirm Order</button>
                 <button class="button secondary" id="cancel-order-btn">Cancel</button>
@@ -160,63 +160,116 @@
 
     <script src="script.js"></script>
     <script>
-        // Enhanced mobile menu functionality for order page
+        // Enhanced mobile menu functionality with error handling
         document.addEventListener('DOMContentLoaded', function() {
-            const clickCheckbox = document.getElementById('click');
-            const navList = document.querySelector('nav ul');
-            const menuBtn = document.querySelector('.menu_btn');
-            const closeBtn = document.querySelector('.close_btn');
-            const header = document.querySelector('header');
-            
-            // Ensure proper initial state
-            clickCheckbox.checked = false;
-            
-            // Handle menu toggle with better event handling
-            clickCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    document.body.style.overflow = 'hidden';
-                    navList.style.zIndex = '1500';
-                } else {
-                    document.body.style.overflow = 'auto';
+            try {
+                const clickCheckbox = document.getElementById('click');
+                const navList = document.querySelector('nav ul');
+                const header = document.querySelector('header');
+                
+                if (!clickCheckbox || !navList || !header) {
+                    console.warn('Navigation elements not found');
+                    return;
                 }
-            });
-            
-            // Close mobile menu when clicking on nav links
-            document.querySelectorAll('nav ul li a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    clickCheckbox.checked = false;
-                    document.body.style.overflow = 'auto';
+                
+                // Ensure proper initial state
+                clickCheckbox.checked = false;
+                
+                // Handle menu toggle with better event handling
+                clickCheckbox.addEventListener('change', function() {
+                    try {
+                        if (this.checked) {
+                            document.body.style.overflow = 'hidden';
+                            document.body.style.position = 'fixed';
+                            document.body.style.width = '100%';
+                            navList.style.zIndex = '1500';
+                        } else {
+                            document.body.style.overflow = 'auto';
+                            document.body.style.position = 'static';
+                            document.body.style.width = 'auto';
+                        }
+                    } catch (error) {
+                        console.error('Error toggling menu:', error);
+                    }
                 });
-            });
-            
-            // Close mobile menu when clicking outside nav
-            document.addEventListener('click', (e) => {
-                if (!header.contains(e.target) && clickCheckbox.checked) {
-                    clickCheckbox.checked = false;
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Prevent menu from closing when clicking inside nav
-            header.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-            
-            // Handle escape key to close menu
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && clickCheckbox.checked) {
-                    clickCheckbox.checked = false;
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Ensure menu closes on window resize
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768 && clickCheckbox.checked) {
-                    clickCheckbox.checked = false;
-                    document.body.style.overflow = 'auto';
-                }
-            });
+                
+                // Close mobile menu when clicking on nav links
+                document.querySelectorAll('nav ul li a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        try {
+                            clickCheckbox.checked = false;
+                            document.body.style.overflow = 'auto';
+                            document.body.style.position = 'static';
+                            document.body.style.width = 'auto';
+                        } catch (error) {
+                            console.error('Error closing menu:', error);
+                        }
+                    });
+                });
+                
+                // Close mobile menu when clicking outside nav
+                document.addEventListener('click', function(e) {
+                    try {
+                        if (!header.contains(e.target) && clickCheckbox.checked) {
+                            clickCheckbox.checked = false;
+                            document.body.style.overflow = 'auto';
+                            document.body.style.position = 'static';
+                            document.body.style.width = 'auto';
+                        }
+                    } catch (error) {
+                        console.error('Error handling outside click:', error);
+                    }
+                });
+                
+                // Prevent menu from closing when clicking inside nav
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Handle escape key to close menu
+                document.addEventListener('keydown', function(e) {
+                    try {
+                        if (e.key === 'Escape' && clickCheckbox.checked) {
+                            clickCheckbox.checked = false;
+                            document.body.style.overflow = 'auto';
+                            document.body.style.position = 'static';
+                            document.body.style.width = 'auto';
+                        }
+                    } catch (error) {
+                        console.error('Error handling escape key:', error);
+                    }
+                });
+                
+                // Ensure menu closes on window resize
+                window.addEventListener('resize', function() {
+                    try {
+                        if (window.innerWidth > 768 && clickCheckbox.checked) {
+                            clickCheckbox.checked = false;
+                            document.body.style.overflow = 'auto';
+                            document.body.style.position = 'static';
+                            document.body.style.width = 'auto';
+                        }
+                    } catch (error) {
+                        console.error('Error handling resize:', error);
+                    }
+                });
+
+                // Handle orientation change
+                window.addEventListener('orientationchange', function() {
+                    setTimeout(function() {
+                        try {
+                            if (clickCheckbox.checked) {
+                                document.body.style.height = window.innerHeight + 'px';
+                            }
+                        } catch (error) {
+                            console.error('Error handling orientation change:', error);
+                        }
+                    }, 100);
+                });
+
+            } catch (error) {
+                console.error('Error initializing mobile menu:', error);
+            }
         });
     </script>
 </body>

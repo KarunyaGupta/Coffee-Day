@@ -66,7 +66,7 @@ function renderMenu() {
                 <div class="menu_item_content">
                     <h4>${item.name}</h4>
                     <p class="item_description">${item.description}</p>
-                    <p class="price">Rs ${item.price}</p>
+                    <p class="price">₹${item.price}</p>
                     <div class="quantity_controls">
                         <button class="quantity_btn" onclick="decreaseQuantity(${item.id})">-</button>
                         <span class="quantity" id="quantity-${item.id}">1</span>
@@ -152,7 +152,32 @@ function addToCart(id) {
     showToast(`${item.name} (${quantity}x) added to cart!`);
 }
 
-// Update cart display
+// Enhanced checkout initialization with loading state
+function initializeCheckout() {
+    if (Object.keys(cart).length === 0) {
+        showToast('Your cart is empty!');
+        return;
+    }
+    
+    // Add loading state to checkout button
+    const checkoutButton = document.getElementById('checkout-btn');
+    if (checkoutButton) {
+        checkoutButton.classList.add('loading');
+        checkoutButton.innerHTML = '<span class="btn-text">Processing...</span>';
+        
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+            checkoutButton.classList.remove('loading');
+            checkoutButton.innerHTML = '<i class="bx bx-credit-card"></i><span class="btn-text">Checkout</span>';
+            
+            renderCartItems();
+            cartModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }, 800);
+    }
+}
+
+// Enhanced update cart function with button animation
 function updateCart() {
     let itemCount = 0;
     totalAmount = 0;
@@ -162,12 +187,38 @@ function updateCart() {
         totalAmount += cart[item].price * cart[item].quantity;
     }
     
-    if (cartCount) cartCount.textContent = itemCount;
-    if (totalAmountElement) totalAmountElement.textContent = totalAmount;
+    if (cartCount) {
+        cartCount.textContent = itemCount;
+        // Add bounce animation when count changes
+        cartCount.style.transform = 'scale(1.3)';
+        setTimeout(() => {
+            cartCount.style.transform = 'scale(1)';
+        }, 200);
+    }
+    
+    if (totalAmountElement) {
+        totalAmountElement.textContent = totalAmount;
+    }
     
     if (checkoutBtn) {
+        const wasDisabled = checkoutBtn.disabled;
         checkoutBtn.disabled = itemCount === 0;
-        checkoutBtn.style.opacity = itemCount === 0 ? '0.5' : '1';
+        
+        if (itemCount === 0) {
+            checkoutBtn.style.opacity = '0.7';
+            checkoutBtn.innerHTML = '<i class="bx bx-credit-card"></i><span class="btn-text">Checkout</span>';
+        } else {
+            checkoutBtn.style.opacity = '1';
+            checkoutBtn.innerHTML = '<i class="bx bx-credit-card"></i><span class="btn-text">Checkout (₹' + totalAmount + ')</span>';
+            
+            // Add a subtle animation when cart becomes ready
+            if (wasDisabled && !checkoutBtn.disabled) {
+                checkoutBtn.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    checkoutBtn.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
     }
 }
 
@@ -178,8 +229,22 @@ function initializeCheckout() {
         return;
     }
     
-    renderCartItems();
-    cartModal.classList.remove('hidden');
+    // Add loading state to checkout button
+    const checkoutButton = document.getElementById('checkout-btn');
+    if (checkoutButton) {
+        checkoutButton.classList.add('loading');
+        checkoutButton.innerHTML = '<span class="btn-text">Processing...</span>';
+        
+        // Simulate loading delay for better UX
+        setTimeout(() => {
+            checkoutButton.classList.remove('loading');
+            checkoutButton.innerHTML = '<i class="bx bx-credit-card"></i><span class="btn-text">Checkout</span>';
+            
+            renderCartItems();
+            cartModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }, 800);
+    }
 }
 
 // Render cart items in modal
@@ -187,27 +252,39 @@ function renderCartItems() {
     const cartItemsContainer = document.getElementById('cart-items');
     const modalTotal = document.getElementById('modal-total');
     
+    if (!cartItemsContainer) return;
+    
     cartItemsContainer.innerHTML = '';
     
+    let cartHasItems = false;
     for (const item in cart) {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart_item';
-        cartItem.innerHTML = `
-            <div class="cart_item_info">
-                <span class="item_name">${item}</span>
-                <span class="item_price">Rs ${cart[item].price} x ${cart[item].quantity} = Rs ${cart[item].price * cart[item].quantity}</span>
-            </div>
-            <div class="cart_item_controls">
-                <button class="quantity_cart_btn" onclick="decreaseCartQuantity('${item}')">-</button>
-                <span class="cart_quantity">${cart[item].quantity}</span>
-                <button class="quantity_cart_btn" onclick="increaseCartQuantity('${item}')">+</button>
-                <button class="remove_btn" onclick="removeFromCart('${item}')">Remove</button>
-            </div>
-        `;
-        cartItemsContainer.appendChild(cartItem);
+        if (cart[item] && cart[item].quantity > 0) {
+            cartHasItems = true;
+            const cartItem = document.createElement('div');
+            cartItem.className = 'cart_item';
+            cartItem.innerHTML = `
+                <div class="cart_item_info">
+                    <span class="item_name">${item}</span>
+                    <span class="item_price">₹ ${cart[item].price} × ${cart[item].quantity} = ₹${cart[item].price * cart[item].quantity}</span>
+                </div>
+                <div class="cart_item_controls">
+                    <button class="quantity_cart_btn" onclick="decreaseCartQuantity('${item}')" title="Decrease quantity">-</button>
+                    <span class="cart_quantity">${cart[item].quantity}</span>
+                    <button class="quantity_cart_btn" onclick="increaseCartQuantity('${item}')" title="Increase quantity">+</button>
+                    <button class="remove_btn" onclick="removeFromCart('${item}')" title="Remove item">Remove</button>
+                </div>
+            `;
+            cartItemsContainer.appendChild(cartItem);
+        }
     }
     
-    modalTotal.textContent = totalAmount;
+    if (!cartHasItems) {
+        cartItemsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Your cart is empty</p>';
+    }
+    
+    if (modalTotal) {
+        modalTotal.textContent = totalAmount;
+    }
 }
 
 // Increase quantity in cart with themed message
@@ -255,9 +332,9 @@ function confirmOrder() {
     let orderSummary = 'Order Summary:\n\n';
     for (const item in cart) {
         const details = cart[item];
-        orderSummary += `${item} x${details.quantity} - Rs${details.price * details.quantity}\n`;
+        orderSummary += `${item} x${details.quantity} - ₹${details.price * details.quantity}\n`;
     }
-    orderSummary += `\nTotal: Rs${totalAmount}`;
+    orderSummary += `\nTotal: ₹${totalAmount}`;
     
     document.getElementById('confirmation-message').textContent = orderSummary;
     cartModal.classList.add('hidden');

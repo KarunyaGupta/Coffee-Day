@@ -958,6 +958,170 @@ footer {
     box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Updated Checkout Button with Modern Coffee Theme */
+.checkout-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-color), var(--primary-color));
+    
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    position: relative;
+    overflow: hidden;
+    min-width: 200px;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(243, 150, 28, 0.4);
+    transform-style: preserve-3d;
+}
+
+.checkout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-color), var(--primary-color));
+    border-radius: 50px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.checkout-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    /* background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%); */
+    border-radius: 50%;
+    transition: all 0.6s ease;
+    transform: translate(-50%, -50%);
+}
+
+.checkout-btn:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    /* background: linear-gradient(135deg, #ff8c00, var(--secondary-color), #d35400); */
+}
+
+.checkout-btn:hover:not(:disabled)::before {
+    opacity: 1;
+}
+
+.checkout-btn:hover:not(:disabled)::after {
+    width: 200px;
+    height: 200px;
+}
+
+.checkout-btn:active:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+    transition: all 0.1s ease;
+    box-shadow: 0 8px 20px rgba(243, 150, 28, 0.5);
+}
+
+.checkout-btn:disabled {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: rgba(255, 255, 255, 0.6);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+    opacity: 0.7;
+}
+
+.checkout-btn:disabled::before,
+.checkout-btn:disabled::after {
+    display: none;
+}
+
+.checkout-btn i {
+    font-size: 20px;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.checkout-btn:hover:not(:disabled) i {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Add a subtle pulse animation when cart has items */
+.checkout-btn:not(:disabled) {
+    animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+    0%, 100% { box-shadow: 0 8px 25px rgba(243, 150, 28, 0.4); }
+    50% { box-shadow: 0 8px 25px rgba(243, 150, 28, 0.6); }
+}
+
+/* Enhanced button text animation */
+.checkout-btn .btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+/* Add loading state for checkout button */
+.checkout-btn.loading {
+    pointer-events: none;
+}
+
+.checkout-btn.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 3;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive checkout button */
+@media (max-width: 768px) {
+    .checkout-btn {
+        width: 100%;
+        padding: 18px 24px;
+        font-size: 15px;
+        min-width: auto;
+    }
+    
+    .checkout-btn i {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-btn {
+        padding: 16px 20px;
+        font-size: 14px;
+        gap: 8px;
+    }
+    
+    .checkout-btn i {
+        font-size: 16px;
+    }
+}
+
 /* Modal Animations */
 @keyframes modalFadeIn {
     from {
@@ -1497,71 +1661,6 @@ footer {
     }
 }
 
-@media (max-width: 320px) {
-    /* Extra small devices */
-    .hero_container .text_section h2 {
-        font-size: 24px;
-    }
-
-    .hero_container .text_section h3 {
-        font-size: 20px;
-    }
-
-    .hero_container .hero_section_button .button {
-        width: 160px;
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-
-    .section_title {
-        font-size: 20px;
-        padding: 20px 0 40px;
-    }
-
-    .about_container .text_section p {
-        font-size: 14px;
-        line-height: 24px;
-    }
-
-    .services_items .services_text h3,
-    .why_items .why_us_text h3 {
-        font-size: 18px;
-    }
-
-    .services_items .services_text p,
-    .why_items .why_us_text p {
-        font-size: 14px;
-    }
-
-    .contact_container .contact_form .field input {
-        height: 40px;
-        padding: 0 10px;
-        font-size: 14px;
-    }
-
-    .contact_container .contact_form textarea {
-        height: 120px;
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .footer_section h3 {
-        font-size: 18px;
-    }
-
-    .cart_summary {
-        padding: 10px;
-    }
-
-    .menu_item_content {
-        padding: 10px;
-    }
-
-    .category_title {
-        font-size: 20px;
-    }
-}
-
 /* Landscape orientation for tablets */
 @media (max-width: 1024px) and (orientation: landscape) {
     .hero_container {
@@ -1611,5 +1710,245 @@ footer {
 
     .gallery_container .gallery_items {
         width: calc(50% - 10px);
+    }
+}
+
+/* Order Popup Modal Styles - Fixed for Mobile */
+.order-popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+    overflow: hidden;
+}
+
+.order-popup-modal.hidden {
+    display: none;
+}
+
+.order-popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(59, 20, 28, 0.9);
+    backdrop-filter: blur(5px);
+    z-index: 2001;
+}
+
+.order-popup-content {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    position: relative;
+    z-index: 2002;
+    transform: scale(0.8);
+    animation: popupScale 0.3s ease forwards;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 3px solid var(--secondary-color);
+    overflow: hidden;
+}
+
+.popup-header {
+    background: linear-gradient(135deg, var(--primary-color), #4a1a24);
+    color: white;
+    padding: 20px 25px;
+    border-radius: 17px 17px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--secondary-color);
+    flex: 1;
+}
+
+.close-popup {
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--secondary-color);
+    transition: all 0.3s ease;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.close-popup:hover {
+    background: rgba(243, 150, 28, 0.2);
+    transform: rotate(90deg);
+}
+
+.popup-body {
+    padding: 25px;
+    text-align: center;
+}
+
+.popup-body p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.popup-buttons .button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--secondary-color), #ff8c00);
+    color: white;
+    box-shadow: 0 4px 15px rgba(243, 150, 28, 0.4);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243, 150, 28, 0.5);
+}
+
+.secondary-btn {
+    background: linear-gradient(135deg, #6c757d, #868e96);
+    color: white;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popupScale {
+    from { 
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+    /* Popup Modal Responsive - Mobile Fix */
+    .order-popup-modal {
+        padding: 10px;
+    }
+
+    .order-popup-content {
+        width: 95%;
+        max-width: none;
+        max-height: 85vh;
+        margin: 0;
+        border-radius: 15px;
+    }
+
+    .popup-header {
+        padding: 15px 20px;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .popup-header h2 {
+        font-size: 18px;
+    }
+
+    .close-popup {
+        font-size: 24px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .popup-body {
+        padding: 20px 15px;
+    }
+
+    .popup-body p {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .popup-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .popup-buttons .button {
+        width: 100%;
+        min-width: auto;
+        padding: 15px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small mobile fixes */
+    .order-popup-content {
+        width: 98%;
+        border-radius: 10px;
+    }
+
+    .popup-header {
+        padding: 12px 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .popup-header h2 {
+        font-size: 16px;
+    }
+
+    .close-popup {
+        font-size: 20px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .popup-body {
+        padding: 15px 12px;
+    }
+
+    .popup-body p {
+        font-size: 13px;
+    }
+
+    .popup-buttons .button {
+        padding: 12px;
+        font-size: 14px;
     }
 }
