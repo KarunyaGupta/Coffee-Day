@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - Coffee Outlet</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="./images/coffee_logo.png">
+</head>
+<body>
+    <!-- Header & Navbar Section -->
+    <header>
+      <nav>
+        <div class="nav_logo">
+          <a href="index.html">
+            <img src="images/coffee_logo.png" alt="Coffee Logo" />
+            <h2>Coffee</h2>
+          </a>
+        </div>
+
+        <input type="checkbox" id="click" />
+        <label for="click">
+          <i class="menu_btn bx bx-menu"></i>
+          <i class="close_btn bx bx-x"></i>
+        </label>
+
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#service">Services</a></li>
+          <li><a href="index.html#why">Why Us</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+          <li><a href="order.html" class="active">Order</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Order Section -->
+    <section class="order_section">
+        <div class="section_container">
+            <h2 class="section_title">Our Menu</h2>
+            
+            <!-- Cart Summary -->
+            <div class="cart_summary">
+                <div class="cart_icon">
+                    <i class="bx bx-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="cart_total">
+                    Total: Rs<span id="total-amount">0</span>
+                </div>
+                <button class="button" id="checkout-btn" disabled>Checkout</button>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="menu_container" id="menu-container">
+                <!-- Menu items will be rendered here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal hidden" id="cart-modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <h3>Your Cart</h3>
+                <span class="close_modal" id="close-cart">&times;</span>
+            </div>
+            <div class="cart_items" id="cart-items">
+                <!-- Cart items will be rendered here -->
+            </div>
+            <div class="cart_footer">
+                <div class="cart_total_modal">
+                    Total: Rs<span id="modal-total">0</span>
+                </div>
+                <button class="button" id="confirm-order-btn">Confirm Order</button>
+                <button class="button secondary" id="cancel-order-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal hidden" id="confirmation-modal">
+        <div class="modal_content">
+            <div class="modal_header">
+                <h3>Order Confirmation</h3>
+            </div>
+            <div class="confirmation_message" id="confirmation-message">
+                <!-- Order summary will be displayed here -->
+            </div>
+            <div class="confirmation_footer">
+                <button class="button" id="complete-order-btn">Complete Order</button>
+                <button class="button secondary" id="cancel-confirmation-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast hidden" id="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="section_container">
+        <div class="footer_section">
+          <div class="footer_logo">
+            <a href="index.html">
+              <img src="images/coffee_logo.png" alt="Coffee Logo" />
+              <h2>Coffee</h2>
+            </a>
+          </div>
+
+          <div class="useful_links">
+            <h3>Useful Links</h3>
+            <ul>
+              <li><a href="index.html#about">About</a></li>
+              <li><a href="index.html#service">Services</a></li>
+              <li><a href="index.html#why">Why Us</a></li>
+              <li><a href="index.html#gallery">Gallery</a></li>
+              <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="contact_us">
+            <h3>Contact</h3>
+            <ul>
+              <li>
+                <i class="bx bx-current-location"></i>
+                <span>Chitkara University</span>
+              </li>
+              <li>
+                <i class="bx bxs-phone-call"></i> <span>+01 92728239</span>
+              </li>
+              <li>
+                <i class="bx bxs-time-five"></i>
+                <span>Mon-Sun : 10:00 AM - 7:00 PM</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="follow_us">
+            <h3>Follow</h3>
+            <i class="bx bxl-facebook-circle"></i>
+            <i class="bx bxl-twitter"></i>
+            <i class="bx bxl-instagram-alt"></i>
+          </div>
+        </div>
+        <p id="copyright">Karunya Gupta | copyright reserved | 2024</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
