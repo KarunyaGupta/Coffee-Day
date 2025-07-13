@@ -39,19 +39,25 @@
 
     <!-- Order Section -->
     <section class="order_section">
+        <div class="order_background_overlay"></div>
         <div class="section_container">
             <h2 class="section_title">Our Menu</h2>
             
             <!-- Cart Summary -->
             <div class="cart_summary">
-                <div class="cart_icon">
-                    <i class="bx bx-cart"></i>
-                    <span id="cart-count">0</span>
+                <div class="cart_info_section">
+                    <div class="cart_icon">
+                        <i class="bx bx-cart"></i>
+                        <span id="cart-count">0</span>
+                    </div>
+                    <div class="cart_total">
+                        Total: Rs<span id="total-amount">0</span>
+                    </div>
                 </div>
-                <div class="cart_total">
-                    Total: Rs<span id="total-amount">0</span>
-                </div>
-                <button class="button" id="checkout-btn" disabled>Checkout</button>
+                <button class="button checkout-btn" id="checkout-btn" disabled>
+                    <i class="bx bx-credit-card"></i>
+                    Checkout
+                </button>
             </div>
 
             <!-- Menu Items -->
@@ -153,5 +159,65 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Enhanced mobile menu functionality for order page
+        document.addEventListener('DOMContentLoaded', function() {
+            const clickCheckbox = document.getElementById('click');
+            const navList = document.querySelector('nav ul');
+            const menuBtn = document.querySelector('.menu_btn');
+            const closeBtn = document.querySelector('.close_btn');
+            const header = document.querySelector('header');
+            
+            // Ensure proper initial state
+            clickCheckbox.checked = false;
+            
+            // Handle menu toggle with better event handling
+            clickCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.style.overflow = 'hidden';
+                    navList.style.zIndex = '1500';
+                } else {
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close mobile menu when clicking on nav links
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    clickCheckbox.checked = false;
+                    document.body.style.overflow = 'auto';
+                });
+            });
+            
+            // Close mobile menu when clicking outside nav
+            document.addEventListener('click', (e) => {
+                if (!header.contains(e.target) && clickCheckbox.checked) {
+                    clickCheckbox.checked = false;
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Prevent menu from closing when clicking inside nav
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            
+            // Handle escape key to close menu
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && clickCheckbox.checked) {
+                    clickCheckbox.checked = false;
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Ensure menu closes on window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && clickCheckbox.checked) {
+                    clickCheckbox.checked = false;
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

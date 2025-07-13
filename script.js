@@ -1,30 +1,30 @@
 // Menu data
 const menuItems = {
     hotBeverages: [
-        { id: 1, name: 'Espresso', price: 120, image: 'images/espresso.jpg', category: 'Hot Beverages' },
-        { id: 2, name: 'Cappuccino', price: 150, image: 'images/cappuccino.jpg', category: 'Hot Beverages' },
-        { id: 3, name: 'Latte', price: 180, image: 'images/latte.jpg', category: 'Hot Beverages' },
-        { id: 4, name: 'Americano', price: 140, image: 'images/americano.jpg', category: 'Hot Beverages' }
+        { id: 1, name: 'Espresso', price: 120, category: 'Hot Beverages', description: 'Rich and bold coffee shot' },
+        { id: 2, name: 'Cappuccino', price: 150, category: 'Hot Beverages', description: 'Creamy coffee with milk foam' },
+        { id: 3, name: 'Latte', price: 180, category: 'Hot Beverages', description: 'Smooth coffee with steamed milk' },
+        { id: 4, name: 'Americano', price: 140, category: 'Hot Beverages', description: 'Classic black coffee' }
     ],
     coldBeverages: [
-        { id: 5, name: 'Iced Coffee', price: 160, image: 'images/iced_coffee.jpg', category: 'Cold Beverages' },
-        { id: 6, name: 'Frappuccino', price: 200, image: 'images/frappuccino.jpg', category: 'Cold Beverages' },
-        { id: 7, name: 'Cold Brew', price: 180, image: 'images/cold_brew.jpg', category: 'Cold Beverages' }
+        { id: 5, name: 'Iced Coffee', price: 160, category: 'Cold Beverages', description: 'Refreshing cold coffee' },
+        { id: 6, name: 'Frappuccino', price: 200, category: 'Cold Beverages', description: 'Blended ice coffee drink' },
+        { id: 7, name: 'Cold Brew', price: 180, category: 'Cold Beverages', description: 'Smooth cold brewed coffee' }
     ],
     refreshments: [
-        { id: 8, name: 'Fresh Orange Juice', price: 100, image: 'images/orange_juice.jpg', category: 'Refreshments' },
-        { id: 9, name: 'Lemonade', price: 80, image: 'images/lemonade.jpg', category: 'Refreshments' },
-        { id: 10, name: 'Smoothie', price: 120, image: 'images/smoothie.jpg', category: 'Refreshments' }
+        { id: 8, name: 'Fresh Orange Juice', price: 100, category: 'Refreshments', description: 'Freshly squeezed orange juice' },
+        { id: 9, name: 'Lemonade', price: 80, category: 'Refreshments', description: 'Fresh lemon drink' },
+        { id: 10, name: 'Smoothie', price: 120, category: 'Refreshments', description: 'Fruit blend smoothie' }
     ],
     desserts: [
-        { id: 11, name: 'Chocolate Cake', price: 180, image: 'images/chocolate_cake.jpg', category: 'Desserts' },
-        { id: 12, name: 'Cheesecake', price: 200, image: 'images/cheesecake.jpg', category: 'Desserts' },
-        { id: 13, name: 'Tiramisu', price: 220, image: 'images/tiramisu.jpg', category: 'Desserts' }
+        { id: 11, name: 'Chocolate Cake', price: 180, category: 'Desserts', description: 'Rich chocolate layer cake' },
+        { id: 12, name: 'Cheesecake', price: 200, category: 'Desserts', description: 'Creamy vanilla cheesecake' },
+        { id: 13, name: 'Tiramisu', price: 220, category: 'Desserts', description: 'Italian coffee-flavored dessert' }
     ],
     snacks: [
-        { id: 14, name: 'Burger', price: 250, image: 'images/burger.jpg', category: 'Snacks' },
-        { id: 15, name: 'French Fries', price: 120, image: 'images/fries.jpg', category: 'Snacks' },
-        { id: 16, name: 'Sandwich', price: 180, image: 'images/sandwich.jpg', category: 'Snacks' }
+        { id: 14, name: 'Burger', price: 250, category: 'Snacks', description: 'Juicy beef burger with fries' },
+        { id: 15, name: 'French Fries', price: 120, category: 'Snacks', description: 'Crispy golden fries' },
+        { id: 16, name: 'Sandwich', price: 180, category: 'Snacks', description: 'Fresh sandwich with filling' }
     ]
 };
 
@@ -41,9 +41,9 @@ const cartModal = document.getElementById('cart-modal');
 const confirmationModal = document.getElementById('confirmation-modal');
 const toast = document.getElementById('toast');
 
-// Render menu items
+// Render menu items without images
 function renderMenu() {
-    if (!menuContainer) return; // Check if we're on the order page
+    if (!menuContainer) return;
     
     menuContainer.innerHTML = '';
     
@@ -63,9 +63,9 @@ function renderMenu() {
             const menuItem = document.createElement('div');
             menuItem.className = 'menu_item';
             menuItem.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" onerror="this.src='images/coffee_logo.png'">
                 <div class="menu_item_content">
                     <h4>${item.name}</h4>
+                    <p class="item_description">${item.description}</p>
                     <p class="price">Rs ${item.price}</p>
                     <div class="quantity_controls">
                         <button class="quantity_btn" onclick="decreaseQuantity(${item.id})">-</button>
@@ -99,7 +99,7 @@ function increaseQuantity(id) {
     quantityElement.textContent = quantity;
 }
 
-// Decrease quantity
+// Decrease quantity (minimum 1)
 function decreaseQuantity(id) {
     const quantityElement = document.getElementById(`quantity-${id}`);
     let quantity = parseInt(quantityElement.textContent);
@@ -109,7 +109,28 @@ function decreaseQuantity(id) {
     }
 }
 
-// Add to cart
+// Show toast notification with enhanced styling
+function showToast(message) {
+    if (!toast) return;
+    const toastMessage = document.getElementById('toast-message');
+    toastMessage.textContent = message;
+    toast.classList.remove('hidden');
+    
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+    
+    // Add click to dismiss functionality
+    const dismissToast = () => {
+        toast.classList.add('hidden');
+        toast.removeEventListener('click', dismissToast);
+    };
+    
+    toast.addEventListener('click', dismissToast);
+}
+
+// Add to cart with better message formatting
 function addToCart(id) {
     const quantityElement = document.getElementById(`quantity-${id}`);
     const quantity = parseInt(quantityElement.textContent);
@@ -128,7 +149,7 @@ function addToCart(id) {
     
     quantityElement.textContent = '1';
     updateCart();
-    showToast(`${item.name} added to cart!`);
+    showToast(`${item.name} (${quantity}x) added to cart!`);
 }
 
 // Update cart display
@@ -148,18 +169,6 @@ function updateCart() {
         checkoutBtn.disabled = itemCount === 0;
         checkoutBtn.style.opacity = itemCount === 0 ? '0.5' : '1';
     }
-}
-
-// Show toast notification
-function showToast(message) {
-    if (!toast) return;
-    const toastMessage = document.getElementById('toast-message');
-    toastMessage.textContent = message;
-    toast.classList.remove('hidden');
-    
-    setTimeout(() => {
-        toast.classList.add('hidden');
-    }, 3000);
 }
 
 // Initialize checkout
@@ -186,10 +195,13 @@ function renderCartItems() {
         cartItem.innerHTML = `
             <div class="cart_item_info">
                 <span class="item_name">${item}</span>
-                <span class="item_price">Rs ${cart[item].price} x ${cart[item].quantity}</span>
+                <span class="item_price">Rs ${cart[item].price} x ${cart[item].quantity} = Rs ${cart[item].price * cart[item].quantity}</span>
             </div>
             <div class="cart_item_controls">
-                <button onclick="removeFromCart('${item}')">Remove</button>
+                <button class="quantity_cart_btn" onclick="decreaseCartQuantity('${item}')">-</button>
+                <span class="cart_quantity">${cart[item].quantity}</span>
+                <button class="quantity_cart_btn" onclick="increaseCartQuantity('${item}')">+</button>
+                <button class="remove_btn" onclick="removeFromCart('${item}')">Remove</button>
             </div>
         `;
         cartItemsContainer.appendChild(cartItem);
@@ -198,12 +210,39 @@ function renderCartItems() {
     modalTotal.textContent = totalAmount;
 }
 
-// Remove from cart
+// Increase quantity in cart with themed message
+function increaseCartQuantity(itemName) {
+    if (cart[itemName]) {
+        cart[itemName].quantity += 1;
+        updateCart();
+        renderCartItems();
+        showToast(`${itemName} quantity increased`);
+    }
+}
+
+// Decrease quantity in cart with themed message
+function decreaseCartQuantity(itemName) {
+    if (cart[itemName]) {
+        if (cart[itemName].quantity > 1) {
+            cart[itemName].quantity -= 1;
+            updateCart();
+            renderCartItems();
+            showToast(`${itemName} quantity decreased`);
+        } else {
+            showToast(`${itemName} is at minimum quantity. Use Remove to delete.`);
+        }
+    }
+}
+
+// Remove from cart with themed message
 function removeFromCart(itemName) {
-    delete cart[itemName];
-    updateCart();
-    renderCartItems();
-    showToast(`${itemName} removed from cart`);
+    if (cart[itemName]) {
+        const removedQuantity = cart[itemName].quantity;
+        delete cart[itemName];
+        updateCart();
+        renderCartItems();
+        showToast(`${itemName} (${removedQuantity} item${removedQuantity > 1 ? 's' : ''}) removed from cart`);
+    }
 }
 
 // Confirm order
@@ -225,7 +264,7 @@ function confirmOrder() {
     confirmationModal.classList.remove('hidden');
 }
 
-// Complete order
+// Complete order with success message
 function completeOrder() {
     cart = {};
     totalAmount = 0;

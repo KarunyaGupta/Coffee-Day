@@ -33,7 +33,7 @@
           <li><a href="#service">Services</a></li>
           <li><a href="#why">Why Us</a></li>
           <li><a href="#gallery">Gallery</a></li>
-          <li><a href="order.html">Order</a></li>
+          <li><a href="#" class="order-popup-btn" onclick="showOrderPopup()">Order</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -52,7 +52,7 @@
             </p>
 
             <div class="hero_section_button">
-              <button class="button" onclick="window.location.href='order.html'">Order Online</button>
+              <button class="button order-popup-btn" onclick="showOrderPopup()">Order Online</button>
               <button class="button">Book A Table</button>
             </div>
           </div>
@@ -344,5 +344,50 @@
         
       </div>
     </footer>
+
+    <!-- Order Popup Modal -->
+    <div class="order-popup-modal hidden" id="order-popup">
+      <div class="order-popup-overlay"></div>
+      <div class="order-popup-content">
+        <div class="popup-header">
+          <h2>Ready to Order?</h2>
+          <span class="close-popup" onclick="closeOrderPopup()">&times;</span>
+        </div>
+        <div class="popup-body">
+          <p>Explore our delicious menu and place your order!</p>
+          <div class="popup-buttons">
+            <button class="button primary-btn" onclick="goToOrderPage()">View Menu</button>
+            <button class="button secondary-btn" onclick="closeOrderPopup()">Maybe Later</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showOrderPopup() {
+        document.getElementById('order-popup').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeOrderPopup() {
+        document.getElementById('order-popup').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+      
+      function goToOrderPage() {
+        closeOrderPopup();
+        setTimeout(() => {
+          window.location.href = 'order.html';
+        }, 300);
+      }
+      
+      // Close popup when clicking outside
+      window.addEventListener('click', (e) => {
+        const popup = document.getElementById('order-popup');
+        if (e.target === popup) {
+          closeOrderPopup();
+        }
+      });
+    </script>
   </body>
 </html>
